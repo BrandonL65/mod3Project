@@ -78,5 +78,10 @@ form.addEventListener("submit", function(e){
   let city = e.target.name.value 
   fetch(`${url}${city}${key}`)
   .then(resp => resp.json())
-  .then(data => console.log(data))
+  .then(data => renderWeatherOnPage(data))
 })
+
+function renderWeatherOnPage(weather){
+  let myWeather = weather.data["0"]
+  
+}

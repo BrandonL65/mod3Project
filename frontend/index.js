@@ -3,6 +3,7 @@ const key = `&key=0602d47b54d7446fa486ca4f81fbf26d`;
 const url = `https://api.weatherbit.io/v2.0/current?city=`;
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
+
 document.addEventListener("DOMContentLoaded", function()
 {
     start();
@@ -41,11 +42,27 @@ function renderSinglePerson(person)
     // fetch(`http://localhost:3000/users/${person.id}`)
     // .then(resp => resp.json())
     // .then(data => console.log(data));
-    container.innerHTML = "";
+    row.innerHTML = "";
     for (let i=0; i < person.citylikes.length; i++)
     {
         appendWeatherToDOM(person.citylikes[i]);
     }
+
+    // let btn = document.createElement("button");
+    // btn.classList.add("btn");
+    // btn.classList.add("btn-danger");
+    // btn.innerText = "Return to all Users";
+    // addEventListenerToReturnButton(btn);
+    container.append(makeReturnButton());
+}
+let makeReturnButton = () => 
+{
+    let btn = document.createElement("button");
+    btn.classList.add("btn");
+    btn.classList.add("btn-danger");
+    btn.innerText = "Return to all Users";
+    addEventListenerToReturnButton(btn);  
+    return btn;
 }
 
 let appendWeatherToDOM = (place) => 
@@ -64,6 +81,8 @@ let renderLikedWeather = (weather) =>
 {
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
+    divBlock.classList.add("individualpage-css");
+    divBlock.style.border = "2px black solid";
     let access = weather.data["0"];
     let intermediate = 
     `
@@ -71,5 +90,16 @@ let renderLikedWeather = (weather) =>
     <h2>It is ${access.temp} degrees Celsius</h2>
     <h3>Conditions: ${access.weather.description}</h3>
     `
-    container.innerHTML = intermediate
+    divBlock.innerHTML = intermediate;
+    row.append(divBlock);
+}
+
+let addEventListenerToReturnButton = (btn) => 
+{
+    btn.addEventListener("click", function()
+    {
+        row.innerHTML = "";
+        btn.remove();
+        start();
+    })
 }

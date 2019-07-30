@@ -1,4 +1,8 @@
 const ul = document.querySelector(".row");
+const key = `&key=0602d47b54d7446fa486ca4f81fbf26d`;
+const url = `https://api.weatherbit.io/v2.0/current?city=`;
+const container = document.querySelector(".container");
+const row = document.querySelector(".row");
 document.addEventListener("DOMContentLoaded", function()
 {
     start();
@@ -24,7 +28,6 @@ let renderPage = (stuff) =>
     }
 }
 
-
 let addEventsToNames = (div, person) => 
 {
     div.addEventListener("click", function()
@@ -38,15 +41,35 @@ function renderSinglePerson(person)
     // fetch(`http://localhost:3000/users/${person.id}`)
     // .then(resp => resp.json())
     // .then(data => console.log(data));
-    let container = document.querySelector(".container");
     container.innerHTML = "";
-    container.innerHTML = 
-    `
-    <h1> ${person.username} </h1>
-    `
     for (let i=0; i < person.citylikes.length; i++)
     {
-        console.log(person.citylikes[i]);
+        appendWeatherToDOM(person.citylikes[i]);
     }
-    
+}
+
+let appendWeatherToDOM = (place) => 
+{
+    let city = place.city;
+    fetchWeatherFromAPI(city);
+}
+
+let fetchWeatherFromAPI = (city) => 
+{
+    fetch(`${url}${city}${key}`)
+    .then(resp => resp.json())
+    .then(data => renderLikedWeather(data));
+}
+let renderLikedWeather = (weather) => 
+{
+    let divBlock = document.createElement("div");
+    divBlock.classList.add("col-lg-6");
+    let access = weather.data["0"];
+    let intermediate = 
+    `
+    <h1>${access.city_name},${access.state_code} </h1>
+    <h2>It is ${access.temp} degrees Celsius</h2>
+    <h3>Conditions: ${access.weather.description}</h3>
+    `
+    container.innerHTML = intermediate
 }

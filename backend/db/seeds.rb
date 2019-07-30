@@ -12,5 +12,4 @@ u1=User.create(username: "brandon")
 u2=User.create(username: "Sean")
 u3=User.create(username: "Tony")
 
-Citylike.create(city: "NYC", user: u1)
-Citylike.create(city: "Houston", user: u2)
+Citylike.create(city: "Raleigh,NC", user: u1)

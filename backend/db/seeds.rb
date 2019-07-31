@@ -13,3 +13,5 @@ u2=User.create(username: "Sean")
 u3=User.create(username: "Tony")
 
 Citylike.create(city: "Raleigh,NC", user: u1)
+Citylike.create(city: "Boston,MA", user: u1);
+Citylike.create(city: "Los Angeles,CA", user: u1);

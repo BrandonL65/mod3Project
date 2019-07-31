@@ -5,6 +5,7 @@ const container = document.querySelector(".container");
 const row = document.querySelector(".row");
 const form = document.querySelector(".city-form")
 
+
 document.addEventListener("DOMContentLoaded", function()
 {
     start();
@@ -37,41 +38,89 @@ let addEventsToNames = (div, person) =>
         renderSinglePerson(person);
     })
 }
-
+//For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
-    container.innerHTML = "";
+    row.innerHTML = "";
     for (let i=0; i < person.citylikes.length; i++)
     {
         appendWeatherToDOM(person.citylikes[i]);
     }
+    container.append(makeReturnButton());
+}
+//Make a return button 
+let makeReturnButton = () => 
+{
+    let btn = document.createElement("button");
+    btn.classList.add("btn");
+    btn.classList.add("btn-danger");
+    btn.innerText = "Return to all Users";
+    addEventListenerToReturnButton(btn);  
+    return btn;
 }
 
+let addEventListenerToReturnButton = (btn) => 
+{
+    btn.addEventListener("click", function()
+    {
+        row.innerHTML = "";
+        btn.remove();
+        start();
+    })
+}
+//Call fetchweather
 let appendWeatherToDOM = (place) => 
 {
     let city = place.city;
     fetchWeatherFromAPI(city);
 }
-
+//Fetching singular weather from API
 let fetchWeatherFromAPI = (city) => 
 {
     fetch(`${url}${city}${key}`)
     .then(resp => resp.json())
     .then(data => renderLikedWeather(data));
 }
+//Code for actually rendering the div with details in it
 let renderLikedWeather = (weather) => 
 {
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
+    divBlock.classList.add("individualpage-css");
+    divBlock.style.border = "2px black solid";
     let access = weather.data["0"];
     let intermediate = 
     `
     <h1>${access.city_name},${access.state_code} </h1>
-    <h2>It is ${access.temp} degrees Celsius</h2>
-    <h3>Conditions: ${access.weather.description}</h3>
     `
-    container.innerHTML = intermediate
+    divBlock.innerHTML = intermediate;
+    addListenerToDivBlock(divBlock, weather);
+    row.append(divBlock);
 }
+
+//Click on div, go to more info 
+let addListenerToDivBlock = (div, weather) => 
+{
+    div.addEventListener("click", function()
+    {
+        container.innerHTML = "";
+        let newDiv = document.createElement("div");
+        let access = weather.data["0"];
+        newDiv.innerHTML = 
+        `
+        <h1>${access.city_name}, ${access.state_code}</h1>
+        <h2> It is ${access.temp} degrees</h2>
+        <p> Feels Like: ${access.app_temp} degrees</p>
+        <h3>${access.weather.description} </h3>
+        <hr>
+        <h3> Humidity: ${access.rh}%</h3>
+        <h3> UV Index: ${access.uv}</h3>
+        <h3> Cloud Coverage: ${access.clouds}%</h3>
+        `
+        container.append(newDiv);
+    })
+}
+
 
 form.addEventListener("submit", function(e){
   e.preventDefault()
@@ -83,5 +132,5 @@ form.addEventListener("submit", function(e){
 
 function renderWeatherOnPage(weather){
   let myWeather = weather.data["0"]
+ }
   
-}

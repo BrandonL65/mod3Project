@@ -3,6 +3,8 @@ const key = `&key=0602d47b54d7446fa486ca4f81fbf26d`;
 const url = `https://api.weatherbit.io/v2.0/current?city=`;
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
+const form = document.querySelector(".city-form")
+
 
 document.addEventListener("DOMContentLoaded", function()
 {
@@ -39,9 +41,6 @@ let addEventsToNames = (div, person) =>
 //For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
-    // fetch(`http://localhost:3000/users/${person.id}`)
-    // .then(resp => resp.json())
-    // .then(data => console.log(data));
     row.innerHTML = "";
     for (let i=0; i < person.citylikes.length; i++)
     {
@@ -121,3 +120,17 @@ let addListenerToDivBlock = (div, weather) =>
         container.append(newDiv);
     })
 }
+
+
+form.addEventListener("submit", function(e){
+  e.preventDefault()
+  let city = e.target.name.value 
+  fetch(`${url}${city}${key}`)
+  .then(resp => resp.json())
+  .then(data => renderWeatherOnPage(data))
+})
+
+function renderWeatherOnPage(weather){
+  let myWeather = weather.data["0"]
+ }
+  

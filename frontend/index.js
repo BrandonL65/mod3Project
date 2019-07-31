@@ -36,7 +36,7 @@ let addEventsToNames = (div, person) =>
         renderSinglePerson(person);
     })
 }
-
+//For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
     // fetch(`http://localhost:3000/users/${person.id}`)
@@ -47,14 +47,9 @@ function renderSinglePerson(person)
     {
         appendWeatherToDOM(person.citylikes[i]);
     }
-
-    // let btn = document.createElement("button");
-    // btn.classList.add("btn");
-    // btn.classList.add("btn-danger");
-    // btn.innerText = "Return to all Users";
-    // addEventListenerToReturnButton(btn);
     container.append(makeReturnButton());
 }
+//Make a return button 
 let makeReturnButton = () => 
 {
     let btn = document.createElement("button");
@@ -65,18 +60,29 @@ let makeReturnButton = () =>
     return btn;
 }
 
+let addEventListenerToReturnButton = (btn) => 
+{
+    btn.addEventListener("click", function()
+    {
+        row.innerHTML = "";
+        btn.remove();
+        start();
+    })
+}
+//Call fetchweather
 let appendWeatherToDOM = (place) => 
 {
     let city = place.city;
     fetchWeatherFromAPI(city);
 }
-
+//Fetching singular weather from API
 let fetchWeatherFromAPI = (city) => 
 {
     fetch(`${url}${city}${key}`)
     .then(resp => resp.json())
     .then(data => renderLikedWeather(data));
 }
+//Code for actually rendering the div with details in it
 let renderLikedWeather = (weather) => 
 {
     let divBlock = document.createElement("div");
@@ -87,19 +93,31 @@ let renderLikedWeather = (weather) =>
     let intermediate = 
     `
     <h1>${access.city_name},${access.state_code} </h1>
-    <h2>It is ${access.temp} degrees Celsius</h2>
-    <h3>Conditions: ${access.weather.description}</h3>
     `
     divBlock.innerHTML = intermediate;
+    addListenerToDivBlock(divBlock, weather);
     row.append(divBlock);
 }
 
-let addEventListenerToReturnButton = (btn) => 
+//Click on div, go to more info 
+let addListenerToDivBlock = (div, weather) => 
 {
-    btn.addEventListener("click", function()
+    div.addEventListener("click", function()
     {
-        row.innerHTML = "";
-        btn.remove();
-        start();
+        container.innerHTML = "";
+        let newDiv = document.createElement("div");
+        let access = weather.data["0"];
+        newDiv.innerHTML = 
+        `
+        <h1>${access.city_name}, ${access.state_code}</h1>
+        <h2> It is ${access.temp} degrees</h2>
+        <p> Feels Like: ${access.app_temp} degrees</p>
+        <h3>${access.weather.description} </h3>
+        <hr>
+        <h3> Humidity: ${access.rh}%</h3>
+        <h3> UV Index: ${access.uv}</h3>
+        <h3> Cloud Coverage: ${access.clouds}%</h3>
+        `
+        container.append(newDiv);
     })
 }

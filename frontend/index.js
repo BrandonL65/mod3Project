@@ -1,6 +1,6 @@
 const ul = document.querySelector(".row");
 const key = `&key=0602d47b54d7446fa486ca4f81fbf26d`;
-const url = `https://api.weatherbit.io/v2.0/current?city=`;
+const url = newFunction();
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
 const form = document.querySelector(".city-form")
@@ -10,7 +10,8 @@ const newUser = document.querySelector(".user-form")
 
 document.addEventListener("DOMContentLoaded", function()
 {
-    start();
+    // start();
+    login()
 })
 
 let start = () => 
@@ -41,6 +42,10 @@ let addEventsToNames = (div, person) =>
         renderSinglePerson(person);
     })
 }
+function newFunction() {
+  return `https://api.weatherbit.io/v2.0/current?city=`;
+}
+
 //For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
@@ -76,8 +81,8 @@ let addListenerToFormDiv = (formDiv, person) =>
         let result = document.querySelector(".search-input").value;
         fetch(`${url}${result}${key}`)
         .then(resp => resp.json())
-        // .then(data => renderData(data, person));
-        .then(data => console.log(data))
+        .then(data => renderData(data, person));
+        // .then(data => console.log(data))
     })
     
 }
@@ -86,12 +91,14 @@ let renderData = (stuff, person) =>
 {
 
     let access = stuff.data["0"];
+    let fahrenheit = Math.round((access.temp * 1.8) + 32)
+    let fahrenheitFeelsLike = Math.round((access.app_temp * 1.8) + 32)
     container.innerHTML = "";
     container.innerHTML = 
     `
-    <h1>${access.city_name}, ${access.state_code}</h1>
-    <h2> It is ${access.temp} degrees</h2>
-    <p> Feels Like: ${access.app_temp} degrees</p>
+    <h1>${access.city_name},${access.state_code}</h1>
+    <h2> It is ${fahrenheit} degrees</h2>
+    <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
     <h3>${access.weather.description} </h3>
     <hr>
     <h3> Humidity: ${access.rh}%</h3>
@@ -187,11 +194,13 @@ let addListenerToDivBlock = (div, weather) =>
         container.innerHTML = "";
         let newDiv = document.createElement("div");
         let access = weather.data["0"];
+        let fahrenheit = Math.round((access.temp * 1.8) + 32)
+        let fahrenheitFeelsLike = Math.round((access.app_temp * 1.8) + 32)
         newDiv.innerHTML = 
         `
-        <h1>${access.city_name}, ${access.state_code}</h1>
-        <h2> It is ${access.temp} degrees</h2>
-        <p> Feels Like: ${access.app_temp} degrees</p>
+        <h1>${access.city_name},${access.state_code}</h1>
+        <h2> It is ${fahrenheit} degrees</h2>
+        <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
         <h3>${access.weather.description} </h3>
         <hr>
         <h3> Humidity: ${access.rh}%</h3>
@@ -203,13 +212,14 @@ let addListenerToDivBlock = (div, weather) =>
 }
 
 
-
-newUser.addEventListener("submit", function(e){
-  e.preventDefault()
-  let user = e.target.name.value 
-  user = capitalize(user)
-  createUser(user)
-})
+function login(){
+  newUser.addEventListener("submit", function(e){
+    e.preventDefault()
+    let user = e.target.name.value 
+    user = capitalize(user)
+    createUser(user)
+  })
+}
 
 function createUser(user){
   fetch(`http://localhost:3000/users`, {
@@ -223,7 +233,7 @@ function createUser(user){
     })
   })
   .then(resp => resp.json())
-  .then(data => console.log(data))
+  .then(data => start())
 }
 /// All usernames have first letter capitalized \\\
 function capitalize(string) {

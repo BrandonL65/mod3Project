@@ -4,6 +4,8 @@ const url = `https://api.weatherbit.io/v2.0/current?city=`;
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
 const form = document.querySelector(".city-form")
+const newUser = document.querySelector(".user-form")
+
 
 document.addEventListener("DOMContentLoaded", function()
 {
@@ -73,15 +75,43 @@ let renderLikedWeather = (weather) =>
     container.innerHTML = intermediate
 }
 
-form.addEventListener("submit", function(e){
+newUser.addEventListener("submit", function(e){
   e.preventDefault()
-  let city = e.target.name.value 
-  fetch(`${url}${city}${key}`)
-  .then(resp => resp.json())
-  .then(data => renderWeatherOnPage(data))
+  let user = e.target.name.value 
+  user = capitalize(user)
+  createUser(user)
 })
 
-function renderWeatherOnPage(weather){
-  let myWeather = weather.data["0"]
-  
+function createUser(user){
+  fetch(`http://localhost:3000/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      username: user
+    })
+  })
+  .then(resp => resp.json())
+  .then(data => console.log(data))
 }
+/// All usernames have first letter capitalized \\\
+function capitalize( string ) {
+  const str = string.toLowerCase()
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+// / FORMER FIND WEATHER ON HOMEPAGE FORM \\\
+// form.addEventListener("submit", function(e){
+//   e.preventDefault()
+//   let city = e.target.name.value 
+//   fetch(`${url}${city}${key}`)
+//   .then(resp => resp.json())
+//   .then(data => renderWeatherOnPage(data))
+// })
+
+// function renderWeatherOnPage(weather){
+//   let myWeather = weather.data["0"]
+//   console.log(myWeather)
+// }

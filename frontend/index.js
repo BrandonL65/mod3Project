@@ -18,7 +18,8 @@ let start = () =>
 
 let renderPage = (stuff) => 
 {
-    document.innerText = " ";
+
+    row.innerText = " ";
     for (let i=0; i < stuff.length; i++)
     {
         let newDiv = document.createElement("div");
@@ -31,6 +32,7 @@ let renderPage = (stuff) =>
 
 let addEventsToNames = (div, person) => 
 {
+
     div.addEventListener("click", function()
     {
         renderSinglePerson(person);
@@ -39,16 +41,86 @@ let addEventsToNames = (div, person) =>
 //For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
-    // fetch(`http://localhost:3000/users/${person.id}`)
-    // .then(resp => resp.json())
-    // .then(data => console.log(data));
+    let formDiv = document.createElement("div");
+    formDiv.classList.add("delete-later");
+    //MAKING BUTTON TO ENTER AND VIEW ANOTHER CITY 
+    let middle = 
+    `
+        Search For A City: <input type="text", name="cityName">
+        <button id="newCityButton" class="btn btn-primary"> Search </button>
+    `
+    formDiv.innerHTML = middle;
+    container.append(formDiv);
+    //ADD LISTENER TO THE BUTTON
+    addListenerToFormDiv(formDiv, person);
+    
     row.innerHTML = "";
+    
     for (let i=0; i < person.citylikes.length; i++)
     {
         appendWeatherToDOM(person.citylikes[i]);
     }
     container.append(makeReturnButton());
 }
+
+let addListenerToFormDiv = (formDiv, person) => 
+{
+    //find button in document 
+    let btn = document.querySelector(".btn-primary");
+    //add listener to it 
+    btn.addEventListener("click", function()
+    {
+        let result = document.querySelector("input").value;
+        fetch(`${url}${result}${key}`)
+        .then(resp => resp.json())
+        .then(data => renderData(data, person));
+    })
+    
+}
+
+let renderData = (stuff, person) => 
+{
+    let access = stuff.data["0"];
+    container.innerHTML = "";
+    container.innerHTML = 
+    `
+    <h1>${access.city_name}, ${access.state_code}</h1>
+    <h2> It is ${access.temp} degrees</h2>
+    <p> Feels Like: ${access.app_temp} degrees</p>
+    <h3>${access.weather.description} </h3>
+    <hr>
+    <h3> Humidity: ${access.rh}%</h3>
+    <h3> UV Index: ${access.uv}</h3>
+    <h3> Cloud Coverage: ${access.clouds}%</h3>
+    `
+    let newButton = document.createElement("button");
+    newButton.classList.add("btn-warning");
+    newButton.innerText = "Click To Favorite";
+    newButton.addEventListener("click", function(e)
+    {
+        fetch(`http://localhost:3000/citylikes`, 
+        {
+            method: "POST",
+            headers:
+            {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify
+            ({
+                "city": `${access.city_name},${access.state_code}`,
+                "user_id": person.id 
+            })
+        })
+        .then(resp => resp.json())
+        .then(function(data)
+        {
+        });
+    });
+    container.append(newButton);
+}
+
+
 //Make a return button 
 let makeReturnButton = () => 
 {
@@ -65,6 +137,8 @@ let addEventListenerToReturnButton = (btn) =>
     btn.addEventListener("click", function()
     {
         row.innerHTML = "";
+        let del = document.querySelector(".delete-later");
+        del.remove();
         btn.remove();
         start();
     })

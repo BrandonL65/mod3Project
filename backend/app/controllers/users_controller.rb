@@ -5,6 +5,7 @@ class UsersController < ApplicationController
         render json: @users, include: :citylikes
     end 
 
+
     def show 
         temp = params[:id]
         @user = User.find(temp)

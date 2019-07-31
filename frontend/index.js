@@ -4,6 +4,8 @@ const url = `https://api.weatherbit.io/v2.0/current?city=`;
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
 const form = document.querySelector(".city-form")
+const newUser = document.querySelector(".user-form")
+
 
 
 document.addEventListener("DOMContentLoaded", function()
@@ -43,7 +45,6 @@ let addEventsToNames = (div, person) =>
 //For every person, call a fn to make a div 
 function renderSinglePerson(person)
 {
-<<<<<<< HEAD
     let formDiv = document.createElement("div");
     formDiv.classList.add("delete-later");
     //MAKING BUTTON TO ENTER AND VIEW ANOTHER CITY 
@@ -57,8 +58,6 @@ function renderSinglePerson(person)
     //ADD LISTENER TO THE BUTTON
     addListenerToFormDiv(formDiv, person);
     
-=======
->>>>>>> ceb7e0a47ba04d5db8d61f46ea8ae3229b8adac2
     row.innerHTML = "";
     
     for (let i=0; i < person.citylikes.length; i++)
@@ -178,6 +177,7 @@ let renderLikedWeather = (weather) =>
     row.append(divBlock);
 }
 
+
 //Click on div, go to more info 
 let addListenerToDivBlock = (div, weather) => 
 {
@@ -202,15 +202,50 @@ let addListenerToDivBlock = (div, weather) =>
 }
 
 
-form.addEventListener("submit", function(e){
+
+newUser.addEventListener("submit", function(e){
   e.preventDefault()
-  let city = e.target.name.value 
-  fetch(`${url}${city}${key}`)
-  .then(resp => resp.json())
-  .then(data => renderWeatherOnPage(data))
+  let user = e.target.name.value 
+  user = capitalize(user)
+  createUser(user)
 })
+
+function createUser(user){
+  fetch(`http://localhost:3000/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    body: JSON.stringify({
+      username: user
+    })
+  })
+  .then(resp => resp.json())
+  .then(data => console.log(data))
+}
+/// All usernames have first letter capitalized \\\
+function capitalize( string ) {
+  const str = string.toLowerCase()
+  return str.charAt(0).toUpperCase() + str.slice(1)
+}
+
+// / FORMER FIND WEATHER ON HOMEPAGE FORM \\\
+// form.addEventListener("submit", function(e){
+//   e.preventDefault()
+//   let city = e.target.name.value 
+//   fetch(`${url}${city}${key}`)
+//   .then(resp => resp.json())
+//   .then(data => renderWeatherOnPage(data))
+// })
+
+// function renderWeatherOnPage(weather){
+//   let myWeather = weather.data["0"]
+//   console.log(myWeather)
+// }
 
 function renderWeatherOnPage(weather){
   let myWeather = weather.data["0"]
  }
   
+

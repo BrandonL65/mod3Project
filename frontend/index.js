@@ -22,7 +22,6 @@ let start = () =>
 
 let renderPage = (stuff) => 
 {
-
     row.innerText = " ";
     for (let i=0; i < stuff.length; i++)
     {
@@ -50,7 +49,7 @@ function renderSinglePerson(person)
     //MAKING BUTTON TO ENTER AND VIEW ANOTHER CITY 
     let middle = 
     `
-        Search For A City: <input type="text", name="cityName">
+        Search For A City: <input class="search-input", type="text", name="cityName">
         <button id="newCityButton" class="btn btn-primary"> Search </button>
     `
     formDiv.innerHTML = middle;
@@ -74,16 +73,18 @@ let addListenerToFormDiv = (formDiv, person) =>
     //add listener to it 
     btn.addEventListener("click", function()
     {
-        let result = document.querySelector("input").value;
+        let result = document.querySelector(".search-input").value;
         fetch(`${url}${result}${key}`)
         .then(resp => resp.json())
-        .then(data => renderData(data, person));
+        // .then(data => renderData(data, person));
+        .then(data => console.log(data))
     })
     
 }
 
 let renderData = (stuff, person) => 
 {
+
     let access = stuff.data["0"];
     container.innerHTML = "";
     container.innerHTML = 
@@ -225,7 +226,7 @@ function createUser(user){
   .then(data => console.log(data))
 }
 /// All usernames have first letter capitalized \\\
-function capitalize( string ) {
+function capitalize(string) {
   const str = string.toLowerCase()
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
@@ -244,8 +245,8 @@ function capitalize( string ) {
 //   console.log(myWeather)
 // }
 
-function renderWeatherOnPage(weather){
-  let myWeather = weather.data["0"]
- }
+// function renderWeatherOnPage(weather){
+//   let myWeather = weather.data["0"]
+//  }
   
 

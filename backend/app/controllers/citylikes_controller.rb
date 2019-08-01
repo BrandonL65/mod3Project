@@ -12,4 +12,13 @@ class CitylikesController < ApplicationController
         render json: @another
 
     end 
+
+    def destroy 
+        @found = Citylike.find(params[:id])
+        @x = @found
+        @found.destroy
+
+        render json: @x
+    end 
+
 end

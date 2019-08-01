@@ -10,7 +10,7 @@ const newUser = document.querySelector(".user-form")
 
 document.addEventListener("DOMContentLoaded", function()
 {
-    // start();
+    start();
     login()
 })
 
@@ -66,7 +66,7 @@ function renderSinglePerson(person)
     
     for (let i=0; i < person.citylikes.length; i++)
     {
-        appendWeatherToDOM(person.citylikes[i]);
+        appendWeatherToDOM(person.citylikes[i], person);
     }
     container.append(makeReturnButton());
 }
@@ -74,6 +74,7 @@ function renderSinglePerson(person)
 let addListenerToFormDiv = (formDiv, person) => 
 {
     //find button in document 
+
     let btn = document.querySelector(".btn-primary");
     //add listener to it 
     btn.addEventListener("click", function()
@@ -156,40 +157,73 @@ let addEventListenerToReturnButton = (btn) =>
     })
 }
 //Call fetchweather
-let appendWeatherToDOM = (place) => 
+let appendWeatherToDOM = (place, person) => 
 {
     let city = place.city;
-    fetchWeatherFromAPI(city);
+    fetchWeatherFromAPI(city, person, place);
 }
 //Fetching singular weather from API
-let fetchWeatherFromAPI = (city) => 
+let fetchWeatherFromAPI = (city, person, place) => 
 {
     fetch(`${url}${city}${key}`)
     .then(resp => resp.json())
-    .then(data => renderLikedWeather(data));
+    .then(data => renderLikedWeather(data, person, place));
 }
 //Code for actually rendering the div with details in it
-let renderLikedWeather = (weather) => 
+let renderLikedWeather = (weather, person, place) => 
 {
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
     divBlock.classList.add("individualpage-css");
     divBlock.style.border = "2px black solid";
+    
     let access = weather.data["0"];
-    let intermediate = 
-    `
-    <h1>${access.city_name},${access.state_code} </h1>
-    `
-    divBlock.innerHTML = intermediate;
-    addListenerToDivBlock(divBlock, weather);
+    // let intermediate = 
+    // `
+    // <h1>${access.city_name},${access.state_code} </h1>
+    // <button> Delete </button>
+    // `
+    // divBlock.innerHTML = intermediate;
+    let h1 = document.createElement("h1");
+    let button = document.createElement("button");
+    h1.innerText = `${access.city_name},${access.state_code}`;
+    button.innerText = "Delete";
+    divBlock.append(h1);
+    divBlock.append(button);
+    addListenerToDivBlock(divBlock, weather,h1); //CHANGED
     row.append(divBlock);
+
+    button.addEventListener("click", function()
+    {
+        fetch(`http://localhost:3000/citylikes/${place.id}`, 
+        {
+            method: "DELETE",
+            headers: 
+            {
+                "Content-Type": "application/json"
+            }
+        })
+        .then(resp => resp.json())
+        .then(function(data)
+        {
+            let all = document.querySelectorAll(".col-lg-6");
+            for (let i=0; i < all.length; i++)
+            {
+                if (all[i].innerText.includes(data.city))
+                {
+                    all[i].remove();
+                }
+            }
+        })
+    })
 }
 
 
 //Click on div, go to more info 
-let addListenerToDivBlock = (div, weather) => 
+let addListenerToDivBlock = (div, weather,h1) => 
 {
-    div.addEventListener("click", function()
+    
+    h1.addEventListener("click", function()
     {
         container.innerHTML = "";
         let newDiv = document.createElement("div");

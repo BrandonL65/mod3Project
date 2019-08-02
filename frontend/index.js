@@ -54,8 +54,9 @@ function renderSinglePerson(person)
     //MAKING BUTTON TO ENTER AND VIEW ANOTHER CITY 
     let middle = 
     `
-        Search For A City: <input class="search-input", type="text", name="cityName">
-        <button id="newCityButton" class="btn btn-primary"> Search </button>
+        <br><p>Search For A City:</p><br>
+        <input class="search-input", type="text", placeholder="City, State, Country(optional)" name="cityName"> <br>
+        <button id="newCityButton" class="btn btn-primary"> Search </button><br><br>
     `
     formDiv.innerHTML = middle;
     container.append(formDiv);
@@ -84,7 +85,7 @@ let addListenerToFormDiv = (formDiv, person) =>
         .then(resp => resp.json())
         .then(data => renderData(data, person));
         // .then(data => console.log(data))
-    })
+    }) 
     
 }
 
@@ -101,7 +102,7 @@ let renderData = (stuff, person) =>
     <h2> It is ${fahrenheit} degrees</h2>
     <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
     <h3>${access.weather.description} </h3>
-    <hr>
+    
     <h3> Humidity: ${access.rh}%</h3>
     <h3> UV Index: ${access.uv}</h3>
     <h3> Cloud Coverage: ${access.clouds}%</h3>
@@ -175,7 +176,7 @@ let renderLikedWeather = (weather, person, place) =>
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
     divBlock.classList.add("individualpage-css");
-    divBlock.style.border = "2px black solid";
+    divBlock.style.border = "2px black inset";
     
     let access = weather.data["0"];
     // let intermediate = 
@@ -188,6 +189,7 @@ let renderLikedWeather = (weather, person, place) =>
     let button = document.createElement("button");
     h1.innerText = `${access.city_name},${access.state_code}`;
     button.innerText = "Delete";
+    button.classList = "btn-delete"
     divBlock.append(h1);
     divBlock.append(button);
     addListenerToDivBlock(divBlock, weather,h1); //CHANGED
@@ -236,7 +238,7 @@ let addListenerToDivBlock = (div, weather,h1) =>
         <h2> It is ${fahrenheit} degrees</h2>
         <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
         <h3>${access.weather.description} </h3>
-        <hr>
+
         <h3> Humidity: ${access.rh}%</h3>
         <h3> UV Index: ${access.uv}</h3>
         <h3> Cloud Coverage: ${access.clouds}%</h3>
@@ -275,22 +277,4 @@ function capitalize(string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
-// / FORMER FIND WEATHER ON HOMEPAGE FORM \\\
-// form.addEventListener("submit", function(e){
-//   e.preventDefault()
-//   let city = e.target.name.value 
-//   fetch(`${url}${city}${key}`)
-//   .then(resp => resp.json())
-//   .then(data => renderWeatherOnPage(data))
-// })
-
-// function renderWeatherOnPage(weather){
-//   let myWeather = weather.data["0"]
-//   console.log(myWeather)
-// }
-
-// function renderWeatherOnPage(weather){
-//   let myWeather = weather.data["0"]
-//  }
-  
 

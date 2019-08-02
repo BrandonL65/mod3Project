@@ -1,4 +1,86 @@
 .individualpage-css 
 {
-    color:blue;
+    color:rgb(255, 255, 255);
+}
+
+body {
+  text-align: center;
+  font-family: 'Poiret One', cursive;
+  background-image: url(https://thumbs.gfycat.com/RequiredUnkemptAfricanharrierhawk-size_restricted.gif);
+  color: white;
+}
+
+.submit {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  background-color: rgb(195, 236, 251);
+  padding: 0.75em;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.submit:hover {
+  /* background-color: white; */
+  opacity: 0.75;
+}
+
+button {
+  background-color: rgb(195, 236, 251);
+  padding: 0.75em;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+button:hover {
+  background-color: white;
+  opacity: 0.75;
+}
+/* button > #button > .button */
+h1 
+{
+  font-size: 60px;
+}
+.topnav {
+  margin-bottom: 30px;
+  font-size: 32px;
+  /* border: 3px inset rgba(230, 109, 29, 0.575); */
+}
+
+
+.search-input {
+  margin-bottom: 20px;
+}
+/* 
+.btn-primary {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background: #7e718b;
+  opacity: 0.75;
+  width: 90px;
+  padding: 4px;
+} */
+
+.btn-delete {
+  margin-bottom: 10px;
+}
+
+
+.master-div { 
+  padding: 50px;
+}
+
+.row 
+{
+  width:500px;
+  margin:auto;
+  /* background-color: darkgray; */
+  opacity:0.8;
+  font-size: 26px;
+  color: white;
+  /* border-radius: 30%; */
+}
+
+.master-container {
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.794)
 }

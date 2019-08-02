@@ -1,6 +1,7 @@
 .individualpage-css 
 {
     color:rgb(255, 255, 255);
+
 }
 
 body {
@@ -109,4 +110,9 @@ h4{
 .search-input {
   width: 150px;
   height: 30px;
+}
+
+.font-size {
+  color: white;
+  font-size: 30px
 }

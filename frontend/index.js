@@ -177,7 +177,7 @@ let renderLikedWeather = (weather, person, place) =>
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
     divBlock.classList.add("individualpage-css");
-    divBlock.style.border = "2px black inset";
+    divBlock.style.border = "2px skyblue inset";
     
     let access = weather.data["0"];
     // let intermediate = 
@@ -188,7 +188,7 @@ let renderLikedWeather = (weather, person, place) =>
     // divBlock.innerHTML = intermediate;
     let h4 = document.createElement("h4");
     let button = document.createElement("button");
-    h4.innerText = `${access.city_name},${access.state_code}`;
+    h4.innerText = `${access.city_name},${access.state_code}, ${access.country_code}`;
     button.innerText = "Delete";
     button.classList = "btn-delete"
     divBlock.append(h4);
@@ -233,9 +233,10 @@ let addListenerToDivBlock = (div, weather,h1) =>
         let access = weather.data["0"];
         let fahrenheit = Math.round((access.temp * 1.8) + 32)
         let fahrenheitFeelsLike = Math.round((access.app_temp * 1.8) + 32)
+        newDiv.classList.add("font-size");
         newDiv.innerHTML = 
         `
-        <h1>${access.city_name},${access.state_code}<h1>
+        <h1>${access.city_name}, ${access.state_code}, ${access.country_code}<h1>
         <h2> It is ${fahrenheit} degrees</h2>
         <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
         <h3>${access.weather.description} </h3>

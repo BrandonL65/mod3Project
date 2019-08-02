@@ -8,6 +8,7 @@ body {
   font-family: 'Poiret One', cursive;
   background-image: url(https://thumbs.gfycat.com/RequiredUnkemptAfricanharrierhawk-size_restricted.gif);
   color: white;
+  cursor: url(stonecold.gif), auto;
 }
 
 .submit {
@@ -36,10 +37,16 @@ button:hover {
   opacity: 0.75;
 }
 /* button > #button > .button */
+
 h1 
 {
   font-size: 60px;
 }
+
+h4{
+  font-size: 40px;
+}
+
 .topnav {
   margin-bottom: 30px;
   font-size: 32px;
@@ -83,4 +90,23 @@ h1
 .master-container {
   font-weight: 900;
   color: rgba(0, 0, 0, 0.794)
+}
+
+.city-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.input-text {
+  width: 150px;
+  height: 30px;
+}
+
+.search-input {
+  width: 150px;
+  height: 30px;
 }

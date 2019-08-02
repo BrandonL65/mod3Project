@@ -1,5 +1,5 @@
 const ul = document.querySelector(".row");
-const key = `&key=0602d47b54d7446fa486ca4f81fbf26d`;
+const key = `&key=50416b6893144dd0965bf662cd2f132c`;
 const url = newFunction();
 const container = document.querySelector(".container");
 const row = document.querySelector(".row");
@@ -55,14 +55,14 @@ function renderSinglePerson(person)
     let middle = 
     `
         <br><p>Search For A City:</p><br>
-        <input class="search-input", type="text", placeholder="City, State, Country(optional)" name="cityName"> <br>
+        <input class="search-input", type="text", placeholder="City, State" name="cityName"> <br>
         <button id="newCityButton" class="btn btn-primary"> Search </button><br><br>
     `
     formDiv.innerHTML = middle;
     container.append(formDiv);
     //ADD LISTENER TO THE BUTTON
     addListenerToFormDiv(formDiv, person);
-    
+    row.classList = "city-row"
     row.innerHTML = "";
     
     for (let i=0; i < person.citylikes.length; i++)
@@ -129,6 +129,7 @@ let renderData = (stuff, person) =>
         .then(resp => resp.json())
         .then(function(data)
         {
+          location.reload();
         });
     });
     container.append(newButton);
@@ -176,7 +177,7 @@ let renderLikedWeather = (weather, person, place) =>
     let divBlock = document.createElement("div");
     divBlock.classList.add("col-lg-6");
     divBlock.classList.add("individualpage-css");
-    divBlock.style.border = "2px black inset";
+    divBlock.style.border = "2px skyblue inset";
     
     let access = weather.data["0"];
     // let intermediate = 
@@ -185,14 +186,14 @@ let renderLikedWeather = (weather, person, place) =>
     // <button> Delete </button>
     // `
     // divBlock.innerHTML = intermediate;
-    let h1 = document.createElement("h1");
+    let h4 = document.createElement("h4");
     let button = document.createElement("button");
-    h1.innerText = `${access.city_name},${access.state_code}`;
+    h4.innerText = `${access.city_name},${access.state_code}, ${access.country_code}`;
     button.innerText = "Delete";
     button.classList = "btn-delete"
-    divBlock.append(h1);
+    divBlock.append(h4);
     divBlock.append(button);
-    addListenerToDivBlock(divBlock, weather,h1); //CHANGED
+    addListenerToDivBlock(divBlock, weather,h4); //CHANGED
     row.append(divBlock);
 
     button.addEventListener("click", function()
@@ -232,9 +233,10 @@ let addListenerToDivBlock = (div, weather,h1) =>
         let access = weather.data["0"];
         let fahrenheit = Math.round((access.temp * 1.8) + 32)
         let fahrenheitFeelsLike = Math.round((access.app_temp * 1.8) + 32)
+        newDiv.classList.add("font-size");
         newDiv.innerHTML = 
         `
-        <h1>${access.city_name},${access.state_code}</h1>
+        <h1>${access.city_name}, ${access.state_code}, ${access.country_code}<h1>
         <h2> It is ${fahrenheit} degrees</h2>
         <p> Feels Like: ${fahrenheitFeelsLike} degrees</p>
         <h3>${access.weather.description} </h3>
